@@ -26,10 +26,10 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+    dictation.cpp
 
 HEADERS += \
-        mainwindow.h
+    dictation.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

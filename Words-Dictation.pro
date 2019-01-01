@@ -29,7 +29,13 @@ SOURCES += \
     dictation.cpp
 
 HEADERS += \
-    dictation.h
+    dictation.h \
+    tts/msp_cmn.h \
+    tts/msp_errors.h \
+    tts/msp_types.h \
+    tts/qise.h \
+    tts/qisr.h \
+    tts/qtts.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -38,3 +44,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     icon.qrc
+
+
+win32: LIBS += -L$$PWD/libs/ -lmsc_x64
+
+INCLUDEPATH += $$PWD/libs
+DEPENDPATH += $$PWD/libs
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/msc_x64.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/libmsc_x64.a

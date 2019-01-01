@@ -2,6 +2,13 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QDebug>
+#include <QTextStream>
+
+
+#if _MSC_VER >= 1910
+#pragma execution_character_set("utf-8")
+#endif
+
 
 dictation::dictation(QWidget *parent) : QWidget(parent)
 {
@@ -48,7 +55,6 @@ void dictation::create_window_widget()
     label_select_vioce->setText(tr("选择发音人"));
     label_dictate_time_interval->setText(tr("听写间隔时间"));
 
-
     /*create comboBox*/
     combo_box_dictate_time_interval = new QComboBox();
 
@@ -81,11 +87,10 @@ void dictation::slot_import_text()
     QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"./",tr("Text files (*.txt)"));
     file.setFileName(file_name);
     if (file.open(QFile::ReadOnly)) {
-        char buffer[2048];
-        qint64 lineLen = file.readLine(buffer,sizeof(buffer));
-        if(lineLen!=-1)
+        QTextStream in(&file);
+        while (!in.atEnd())
         {
-            qDebug()<<buffer;
+           qDebug()<<in.readLine();
         }
     }
 }

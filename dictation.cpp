@@ -33,6 +33,8 @@ void dictation::create_window_widget()
     btn_radio_vioce_man->setText(tr("男"));
     btn_radio_vioce_woman->setText(tr("女"));
 
+    btn_radio_vioce_man->setChecked(true);
+
 
     /*create labels*/
     label_select_vioce = new QLabel();

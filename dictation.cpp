@@ -1,4 +1,7 @@
 ﻿#include "dictation.h"
+#include <QFileDialog>
+#include <QFile>
+#include <QDebug>
 
 dictation::dictation(QWidget *parent) : QWidget(parent)
 {
@@ -6,6 +9,8 @@ dictation::dictation(QWidget *parent) : QWidget(parent)
     setWindowTitle(tr("单词听写"));
     setWindowIcon(QIcon(":/new/prefix1/ico.ico"));
     create_window_widget();
+
+    connect(btn_import_text,SIGNAL(clicked()),this,SLOT(slot_import_text()));
 }
 
 dictation::~dictation()
@@ -68,4 +73,19 @@ void dictation::create_window_widget()
     layout_h_main->addLayout(layout_h_left_select_vioce,0,0);
     layout_h_main->addLayout(layout_h_left_dictate_time_interval,1,0);
     layout_h_main->addLayout(layout_v_right,0,1,2,2);
+}
+
+void dictation::slot_import_text()
+{
+    QFile file;
+    QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"./",tr("Text files (*.txt)"));
+    file.setFileName(file_name);
+    if (file.open(QFile::ReadOnly)) {
+        char buffer[2048];
+        qint64 lineLen = file.readLine(buffer,sizeof(buffer));
+        if(lineLen!=-1)
+        {
+            qDebug()<<buffer;
+        }
+    }
 }

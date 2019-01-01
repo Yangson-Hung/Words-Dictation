@@ -36,6 +36,9 @@ private:
     QVBoxLayout *layout_v_right;
 
     QGridLayout *layout_h_main;
+
+private slots:
+    void slot_import_text();
 };
 
 #endif // DICTATION_H

@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+
 class dictation : public QWidget
 {
     Q_OBJECT
@@ -39,6 +40,7 @@ private:
 
 private slots:
     void slot_import_text();
+    void slot_begin_dictate();
 };
 
 #endif // DICTATION_H

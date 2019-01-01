@@ -26,7 +26,8 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-    dictation.cpp
+    dictation.cpp \
+    tts.cpp
 
 HEADERS += \
     dictation.h \
@@ -35,7 +36,8 @@ HEADERS += \
     tts/msp_types.h \
     tts/qise.h \
     tts/qisr.h \
-    tts/qtts.h
+    tts/qtts.h \
+    tts.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

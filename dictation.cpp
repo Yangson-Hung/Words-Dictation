@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
+#include "tts.h"
 
 
 #if _MSC_VER >= 1910
@@ -18,6 +19,7 @@ dictation::dictation(QWidget *parent) : QWidget(parent)
     create_window_widget();
 
     connect(btn_import_text,SIGNAL(clicked()),this,SLOT(slot_import_text()));
+    connect(btn_begin_dictate,SIGNAL(clicked()),this,SLOT(slot_begin_dictate()));
 }
 
 dictation::~dictation()
@@ -93,4 +95,9 @@ void dictation::slot_import_text()
            qDebug()<<in.readLine();
         }
     }
+}
+
+void dictation::slot_begin_dictate()
+{
+    begin_tts("resource","my.wav");
 }

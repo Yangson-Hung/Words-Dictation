@@ -1,8 +1,6 @@
 ﻿#ifndef TTS_H
 #define TTS_H
 
-
-/* wav音频头部格式 */
 typedef struct _wave_pcm_hdr
 {
     char            riff[4];
@@ -24,10 +22,6 @@ typedef struct _wave_pcm_hdr
 
 int text_to_speech(const char* src_text, const char* des_path, const char* params);
 void begin_tts(const char* text, const char* filename);
-
-
-
-
 
 
 #endif // TTS_H

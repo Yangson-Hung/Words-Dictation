@@ -111,6 +111,3 @@ void dictation::slot_begin_dictate()
     set_voice();
     begin_tts("include","my.wav",voice_name);
 }
-
-
-

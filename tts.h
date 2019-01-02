@@ -1,5 +1,6 @@
 ﻿#ifndef TTS_H
 #define TTS_H
+#include <QString>
 
 typedef struct _wave_pcm_hdr
 {
@@ -21,7 +22,7 @@ typedef struct _wave_pcm_hdr
 } wave_pcm_hdr;
 
 int text_to_speech(const char* src_text, const char* des_path, const char* params);
-void begin_tts(const char* text, const char* filename);
+void begin_tts(const char* text, const char* filename, QString voice_name);
 
 
 #endif // TTS_H

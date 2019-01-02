@@ -1,10 +1,9 @@
 ﻿#include "dictation.h"
 #include <QFileDialog>
 #include <QFile>
-#include <QDebug>
 #include <QTextStream>
 #include "tts.h"
-
+#include <QDebug>
 
 #if _MSC_VER >= 1910
 #pragma execution_character_set("utf-8")
@@ -16,7 +15,7 @@ dictation::dictation(QWidget *parent) : QWidget(parent)
     setMaximumSize(500,500);
     setWindowTitle(tr("单词听写"));
     setWindowIcon(QIcon(":/new/prefix1/ico.ico"));
-    create_window_widget();
+    create_window_widgets();
 
     connect(btn_import_text,SIGNAL(clicked()),this,SLOT(slot_import_text()));
     connect(btn_begin_dictate,SIGNAL(clicked()),this,SLOT(slot_begin_dictate()));
@@ -27,7 +26,7 @@ dictation::~dictation()
 
 }
 
-void dictation::create_window_widget()
+void dictation::create_window_widgets()
 {
     /*create layouts*/
     layout_h_left_select_vioce = new QHBoxLayout();
@@ -63,7 +62,6 @@ void dictation::create_window_widget()
     combo_box_dictate_time_interval->insertItem(0,tr("3s"));
     combo_box_dictate_time_interval->insertItem(1,tr("5s"));
 
-
     /*add widgets*/
 
     //left
@@ -83,8 +81,18 @@ void dictation::create_window_widget()
     layout_h_main->addLayout(layout_v_right,0,1,2,2);
 }
 
+void dictation::set_voice()
+{
+    if (btn_radio_vioce_man->isChecked()) {
+        voice_name = JOHN;
+    } else if (btn_radio_vioce_woman->isChecked()) {
+        voice_name = CATHERINE;
+    }
+}
+
 void dictation::slot_import_text()
 {
+    QString tmp = "";
     QFile file;
     QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"./",tr("Text files (*.txt)"));
     file.setFileName(file_name);
@@ -92,12 +100,17 @@ void dictation::slot_import_text()
         QTextStream in(&file);
         while (!in.atEnd())
         {
-           qDebug()<<in.readLine();
+            tmp = in.readLine();
+            qstr_vector.push_back(tmp);
         }
     }
 }
 
 void dictation::slot_begin_dictate()
 {
-    begin_tts("resource","my.wav");
+    set_voice();
+    begin_tts("include","my.wav",voice_name);
 }
+
+
+

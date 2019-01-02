@@ -91,11 +91,17 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
     return ret;
 }
 
-void begin_tts(const char* in_text, const char* in_filename)
+void begin_tts(const char* in_text, const char* in_filename, QString voice_name)
 {
     int         ret = MSP_SUCCESS;
+
+    QString params_head = "voice_name = ";
+    QString params_tail = ", text_encoding = UTF8, sample_rate = 16000, speed = 30, volume = 100, pitch = 50, rdn = 2";
+    QString tmp = params_head + voice_name + params_tail;
+    QByteArray params_combined = tmp.toLatin1();
+
     const char* login_params = "appid = 5c25c3f2, work_dir = .";
-    const char* session_begin_params = "voice_name = catherine, text_encoding = UTF8, sample_rate = 16000, speed = 30, volume = 50, pitch = 50, rdn = 2";
+    const char* session_begin_params = params_combined.data();
     const char* filename = in_filename;
     const char* text = in_text;
 

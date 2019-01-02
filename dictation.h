@@ -9,15 +9,18 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QVector>
 
+const QString JOHN = "john";
+const QString CATHERINE = "catherine";
 
 class dictation : public QWidget
 {
     Q_OBJECT
 public:
     explicit dictation(QWidget *parent = nullptr);
-    ~dictation();
-    void create_window_widget();
+    ~dictation();    
+    void create_window_widgets();
 
 private:
     QPushButton *btn_begin_dictate;
@@ -37,6 +40,11 @@ private:
     QVBoxLayout *layout_v_right;
 
     QGridLayout *layout_h_main;
+
+    QString voice_name;
+    QVector<QString> qstr_vector;
+private:
+    void set_voice();
 
 private slots:
     void slot_import_text();

@@ -117,12 +117,11 @@ void Dictation::slot_begin_dictate()
         set_voice(); //发音人选择
         getaudio = new GetAudioThread(qstr_vector,voice_name); //新建获得音频的线程
         getaudio->start(); //开启线程
-
-//        /*当语音合成结束时，将线程结束*/
-//        if (getaudio->get_over()) {
-//            getaudio->terminate(); //终止线程
-//            getaudio->wait(); //等待线程阻塞
-//        }
+        /*当语音合成结束时，将线程结束*/
+        if (getaudio->get_over()) {
+            getaudio->terminate(); //终止线程
+            getaudio->wait(); //等待线程阻塞
+        }
     } else {
         /*未导入文本时提示*/
         QMessageBox::warning(this,tr("提示"),tr("请先导入文件"),tr("确定"));

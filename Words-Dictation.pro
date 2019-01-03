@@ -35,8 +35,6 @@ HEADERS += \
     tts/msp_cmn.h \
     tts/msp_errors.h \
     tts/msp_types.h \
-    tts/qise.h \
-    tts/qisr.h \
     tts/qtts.h \
     tts.h \
     getaudiothread.h

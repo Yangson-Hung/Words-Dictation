@@ -19,7 +19,7 @@ typedef struct _wave_pcm_hdr
 
     char            data[4];
     int             data_size;
-} wave_pcm_hdr;
+}wave_pcm_hdr;
 
 
 int text_to_speech(const char* src_text, const char* des_path, const char* params);

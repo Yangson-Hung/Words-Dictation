@@ -9,7 +9,7 @@
 #include "tts/msp_errors.h"
 #include "tts.h"
 
-wave_pcm_hdr default_wav_hdr =
+static wave_pcm_hdr default_wav_hdr =
 {
     { 'R', 'I', 'F', 'F' },
     0,
@@ -29,18 +29,18 @@ wave_pcm_hdr default_wav_hdr =
 int text_to_speech(const char* src_text, const char* des_path, const char* params)
 {
     int          ret = -1;
-    FILE*        fp = NULL;
-    const char*  sessionID = NULL;
+    FILE*        fp = nullptr;
+    const char*  sessionID = nullptr;
     unsigned int audio_len = 0;
     wave_pcm_hdr wav_hdr = default_wav_hdr;
     int          synth_status = MSP_TTS_FLAG_STILL_HAVE_DATA;
 
-    if (NULL == src_text || NULL == des_path)
+    if (nullptr == src_text || nullptr == des_path)
     {
         return ret;
     }
     fp = fopen(des_path, "wb");
-    if (NULL == fp)
+    if (nullptr == fp)
     {
         return ret;
     }
@@ -50,7 +50,7 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
         fclose(fp);
         return ret;
     }
-    ret = QTTSTextPut(sessionID, src_text, (unsigned int)strlen(src_text), NULL);
+    ret = QTTSTextPut(sessionID, src_text, (unsigned int)strlen(src_text), nullptr);
     if (MSP_SUCCESS != ret)
     {
         QTTSSessionEnd(sessionID, "TextPutError");
@@ -63,7 +63,7 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
         const void* data = QTTSAudioGet(sessionID, &audio_len, &synth_status, &ret);
         if (MSP_SUCCESS != ret)
             break;
-        if (NULL != data)
+        if (nullptr != data)
         {
             fwrite(data, audio_len, 1, fp);
             wav_hdr.data_size += audio_len;
@@ -85,7 +85,7 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
     fseek(fp, 40, 0);
     fwrite(&wav_hdr.data_size, sizeof(wav_hdr.data_size), 1, fp);
     fclose(fp);
-    fp = NULL;
+    fp = nullptr;
 
     ret = QTTSSessionEnd(sessionID, "Normal");
 
@@ -111,7 +111,7 @@ void begin_tts(QString in_text, QString in_filename, QString in_voice_name)
     QByteArray btarr_session_begin_params = in_session_begin_params.toLatin1();
     const char* session_begin_params = btarr_session_begin_params.data();
 
-    ret = MSPLogin(NULL, NULL, login_params);
+    ret = MSPLogin(nullptr, nullptr, login_params);
     if (MSP_SUCCESS != ret)
     {
         MSPLogout();

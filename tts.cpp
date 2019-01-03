@@ -70,6 +70,7 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
         }
         if (MSP_TTS_FLAG_DATA_END == synth_status)
             break;
+        Sleep(150);
     }
     if (MSP_SUCCESS != ret)
     {
@@ -91,19 +92,24 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
     return ret;
 }
 
-void begin_tts(const char* in_text, const char* in_filename, QString voice_name)
+void begin_tts(QString in_text, QString in_filename, QString in_voice_name)
 {
     int         ret = MSP_SUCCESS;
+    const char* login_params = "appid = 5c25c3f2, work_dir = .";
+
+    QByteArray btarr_text = in_text.toLatin1();
+    const char* text = btarr_text.data();
+
+    const QString file_format = ".wav";
+    QByteArray btarr_filename = (in_filename+file_format).toLatin1();
+    const char* filename = btarr_filename.data();
 
     QString params_head = "voice_name = ";
-    QString params_tail = ", text_encoding = UTF8, sample_rate = 16000, speed = 30, volume = 100, pitch = 50, rdn = 2";
-    QString tmp = params_head + voice_name + params_tail;
-    QByteArray params_combined = tmp.toLatin1();
+    QString params_tail = ", text_encoding = UTF8, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
+    QString in_session_begin_params = params_head + in_voice_name + params_tail;
 
-    const char* login_params = "appid = 5c25c3f2, work_dir = .";
-    const char* session_begin_params = params_combined.data();
-    const char* filename = in_filename;
-    const char* text = in_text;
+    QByteArray btarr_session_begin_params = in_session_begin_params.toLatin1();
+    const char* session_begin_params = btarr_session_begin_params.data();
 
     ret = MSPLogin(NULL, NULL, login_params);
     if (MSP_SUCCESS != ret)

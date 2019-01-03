@@ -1,32 +1,28 @@
 ﻿#include "dictation.h"
+#include "tts.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
-#include "tts.h"
+#include <QMessageBox>
+
+
 #include <QDebug>
 
-#if _MSC_VER >= 1910
-#pragma execution_character_set("utf-8")
-#endif
 
-
-dictation::dictation(QWidget *parent) : QWidget(parent)
+Dictation::Dictation(QWidget *parent) : QWidget(parent)
 {
-    setMaximumSize(500,500);
-    setWindowTitle(tr("单词听写"));
-    setWindowIcon(QIcon(":/new/prefix1/ico.ico"));
     create_window_widgets();
 
     connect(btn_import_text,SIGNAL(clicked()),this,SLOT(slot_import_text()));
     connect(btn_begin_dictate,SIGNAL(clicked()),this,SLOT(slot_begin_dictate()));
 }
 
-dictation::~dictation()
+Dictation::~Dictation()
 {
 
 }
 
-void dictation::create_window_widgets()
+void Dictation::create_window_widgets()
 {
     /*create layouts*/
     layout_h_left_select_vioce = new QHBoxLayout();
@@ -41,12 +37,13 @@ void dictation::create_window_widgets()
     btn_radio_vioce_man = new QRadioButton();
     btn_radio_vioce_woman = new QRadioButton();
 
+
     btn_import_text->setText(tr("导入文本"));
     btn_begin_dictate->setText(tr("开始听写"));
     btn_radio_vioce_man->setText(tr("男"));
     btn_radio_vioce_woman->setText(tr("女"));
 
-    btn_radio_vioce_man->setChecked(true);
+    btn_radio_vioce_woman->setChecked(true);
 
 
     /*create labels*/
@@ -66,8 +63,8 @@ void dictation::create_window_widgets()
 
     //left
     layout_h_left_select_vioce->addWidget(label_select_vioce);
-    layout_h_left_select_vioce->addWidget(btn_radio_vioce_man);
     layout_h_left_select_vioce->addWidget(btn_radio_vioce_woman);
+    layout_h_left_select_vioce->addWidget(btn_radio_vioce_man);
     layout_h_left_dictate_time_interval->addWidget(label_dictate_time_interval);
     layout_h_left_dictate_time_interval->addWidget(combo_box_dictate_time_interval);
 
@@ -81,7 +78,7 @@ void dictation::create_window_widgets()
     layout_h_main->addLayout(layout_v_right,0,1,2,2);
 }
 
-void dictation::set_voice()
+void Dictation::set_voice()
 {
     if (btn_radio_vioce_man->isChecked()) {
         voice_name = JOHN;
@@ -90,7 +87,7 @@ void dictation::set_voice()
     }
 }
 
-void dictation::slot_import_text()
+void Dictation::slot_import_text()
 {
     QString tmp = "";
     QFile file;
@@ -103,11 +100,19 @@ void dictation::slot_import_text()
             tmp = in.readLine();
             qstr_vector.push_back(tmp);
         }
+        is_import_text = true;
     }
 }
 
-void dictation::slot_begin_dictate()
+void Dictation::slot_begin_dictate()
 {
-    set_voice();
-    begin_tts("include","my.wav",voice_name);
+    if (is_import_text)
+    {
+        set_voice();
+        for (int i = 0; i < qstr_vector.size(); ++i) {
+            begin_tts(qstr_vector[i],qstr_vector[i],voice_name);
+        }
+    } else {      
+        QMessageBox::warning(this,tr("提示"),tr("请先导入文件"),tr("确定"));
+    }
 }

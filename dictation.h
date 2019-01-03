@@ -11,15 +11,19 @@
 #include <QVBoxLayout>
 #include <QVector>
 
+#if _MSC_VER >= 1910
+#pragma execution_character_set("utf-8")
+#endif
+
 const QString JOHN = "john";
 const QString CATHERINE = "catherine";
 
-class dictation : public QWidget
+class Dictation : public QWidget
 {
     Q_OBJECT
 public:
-    explicit dictation(QWidget *parent = nullptr);
-    ~dictation();    
+    explicit Dictation(QWidget *parent = nullptr);
+    ~Dictation();
     void create_window_widgets();
 
 private:
@@ -43,6 +47,7 @@ private:
 
     QString voice_name;
     QVector<QString> qstr_vector;
+    bool is_import_text;
 private:
     void set_voice();
 

@@ -27,8 +27,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     dictation.cpp \
-    tts.cpp \
-    getaudiothread.cpp
+    tts.cpp
 
 HEADERS += \
     dictation.h \
@@ -38,8 +37,7 @@ HEADERS += \
     tts/qise.h \
     tts/qisr.h \
     tts/qtts.h \
-    tts.h \
-    getaudiothread.h
+    tts.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

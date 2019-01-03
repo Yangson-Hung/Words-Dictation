@@ -4,10 +4,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
-
-
-#include <QDebug>
-
+#include "getaudiothread.h"
 
 Dictation::Dictation(QWidget *parent) : QWidget(parent)
 {
@@ -78,6 +75,7 @@ void Dictation::create_window_widgets()
     layout_h_main->addLayout(layout_v_right,0,1,2,2);
 }
 
+
 void Dictation::set_voice()
 {
     if (btn_radio_vioce_man->isChecked()) {
@@ -86,6 +84,7 @@ void Dictation::set_voice()
         voice_name = CATHERINE;
     }
 }
+
 
 void Dictation::slot_import_text()
 {
@@ -104,15 +103,15 @@ void Dictation::slot_import_text()
     }
 }
 
+
 void Dictation::slot_begin_dictate()
 {
     if (is_import_text)
     {
         set_voice();
-        for (int i = 0; i < qstr_vector.size(); ++i) {
-            begin_tts(qstr_vector[i],qstr_vector[i],voice_name);
-        }
-    } else {      
+        getaudio = new GetAudioThread(qstr_vector,voice_name);
+        getaudio->start();
+    } else {
         QMessageBox::warning(this,tr("提示"),tr("请先导入文件"),tr("确定"));
     }
 }

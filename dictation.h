@@ -45,8 +45,7 @@ private:
     QString voice_name;
     QVector<QString> qstr_vector;
     GetAudioThread *getaudio;
-    bool is_import_text;
-    bool we;
+    bool is_import_text = false;
     void set_voice();
 
 private slots:

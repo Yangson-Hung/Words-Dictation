@@ -70,7 +70,7 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
         }
         if (MSP_TTS_FLAG_DATA_END == synth_status)
             break;
-        Sleep(150);
+        //Sleep(150);
     }
     if (MSP_SUCCESS != ret)
     {

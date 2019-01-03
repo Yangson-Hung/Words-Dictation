@@ -88,30 +88,43 @@ void Dictation::set_voice()
 
 void Dictation::slot_import_text()
 {
-    QString tmp = "";
-    QFile file;
+    /*获得文件名*/
     QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"./",tr("Text files (*.txt)"));
-    file.setFileName(file_name);
+    /* 当未获得文件名时，不往下执行
+     * 如果没有这个if判断，会在控制台出现
+     * "QFSFileEngine::open: No file name specified"提示
+    */
+    if (file_name.isEmpty()) {
+        return;
+    }
+    QFile file(file_name); //给“文件”设置文件名
+    /*以只读方式打开*/
     if (file.open(QFile::ReadOnly)) {
-        QTextStream in(&file);
-        while (!in.atEnd())
-        {
-            tmp = in.readLine();
-            qstr_vector.push_back(tmp);
+        QTextStream text_stream_in(&file); //定义QTextStream的输入流
+        /*当读取的不是最后一行时*/
+        while (!text_stream_in.atEnd()) {
+            qstr_vector.push_back(text_stream_in.readLine()); //将读取内容保存到QString容器中
         }
-        is_import_text = true;
+        is_import_text = true; //文件已经导入的标志
     }
 }
 
 
 void Dictation::slot_begin_dictate()
 {
-    if (is_import_text)
-    {
-        set_voice();
-        getaudio = new GetAudioThread(qstr_vector,voice_name);
-        getaudio->start();
+    /*导入文本后执行语音合成*/
+    if (is_import_text) {
+        set_voice(); //发音人选择
+        getaudio = new GetAudioThread(qstr_vector,voice_name); //新建获得音频的线程
+        getaudio->start(); //开启线程
+
+//        /*当语音合成结束时，将线程结束*/
+//        if (getaudio->get_over()) {
+//            getaudio->terminate(); //终止线程
+//            getaudio->wait(); //等待线程阻塞
+//        }
     } else {
+        /*未导入文本时提示*/
         QMessageBox::warning(this,tr("提示"),tr("请先导入文件"),tr("确定"));
     }
 }

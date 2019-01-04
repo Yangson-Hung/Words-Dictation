@@ -1,6 +1,6 @@
 ﻿#include <stdlib.h>
 #include <stdio.h>
-//#include <windows.h>
+#include <qt_windows.h>
 #include <conio.h>
 #include <errno.h>
 
@@ -8,7 +8,8 @@
 #include "tts/msp_cmn.h"
 #include "tts/msp_errors.h"
 #include "tts.h"
-#include <qt_windows.h>
+#include "dictation.h"
+
 
 static wave_pcm_hdr default_wav_hdr =
 {
@@ -93,14 +94,14 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
     return ret;
 }
 
-void begin_tts(QString in_text, QString in_filename, QString in_voice_name)
+void begin_tts(QString _text, QString _filename, QString _voice_name)
 {
     int         ret = MSP_SUCCESS;
     const char* login_params = "appid = 5c25c3f2, work_dir = .";//登录参数,appid与msc库绑定,请勿随意改动
     const QString file_format = ".wav";
 
-    QByteArray text_ba = in_text.toLatin1();
-    QByteArray filename_ba = (in_filename + file_format).toLatin1();
+    QByteArray text_ba = _text.toLatin1();
+    QByteArray filename_ba = (_filename + file_format).toLatin1();
 
     const char* text = text_ba.data();
     const char* filename = filename_ba.data();
@@ -113,11 +114,22 @@ void begin_tts(QString in_text, QString in_filename, QString in_voice_name)
     * voice_name:    合成发音人
     * sample_rate:   合成音频采样率
     * text_encoding: 合成文本编码格式
-    *
+    * engine_type:   合成引擎类型
+    * tts_res_path:  合成资源路径
     */
-    QString params_head = "voice_name = ";
-    QString params_tail = ", text_encoding = UTF8, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
-    QByteArray session_begin_params_ba = (params_head + in_voice_name + params_tail).toLatin1();
+    QString voice_name_key = "voice_name = ";
+
+    QString params = ", engine_type = local, text_encoding = UTF8, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2, ";
+    QString tts_res_path_xiaoyan = "tts_res_path = fo|res\\tts\\xiaoyan.jet;fo|res\\tts\\common.jet";
+    QString tts_res_path_xiaofeng = "tts_res_path = fo|res\\tts\\xiaofeng.jet;fo|res\\tts\\common.jet";
+
+    if (_voice_name == XIAOYAN) {
+        params += tts_res_path_xiaoyan;
+    } else if (_voice_name == XIAOFENG) {
+        params += tts_res_path_xiaofeng;
+    }
+
+    QByteArray session_begin_params_ba = (voice_name_key + _voice_name + params).toLatin1();
     const char* session_begin_params = session_begin_params_ba.data();
 
     ret = MSPLogin(nullptr, nullptr, login_params);

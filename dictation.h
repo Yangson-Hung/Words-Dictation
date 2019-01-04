@@ -16,8 +16,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-const QString JOHN = "john";
-const QString CATHERINE = "catherine";
+const QString XIAOYAN = "xiaoyan";
+const QString XIAOFENG = "xiaofeng";
 
 class Dictation : public QWidget
 {

@@ -79,9 +79,9 @@ void Dictation::create_window_widgets()
 void Dictation::set_voice()
 {
     if (btn_radio_vioce_man->isChecked()) {
-        voice_name = JOHN;
+        voice_name = XIAOFENG;
     } else if (btn_radio_vioce_woman->isChecked()) {
-        voice_name = CATHERINE;
+        voice_name = XIAOYAN;
     }
 }
 

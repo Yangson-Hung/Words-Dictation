@@ -23,7 +23,7 @@ typedef struct _wave_pcm_hdr
 
 
 int text_to_speech(const char* src_text, const char* des_path, const char* params);
-void begin_tts(QString in_text, QString in_filename, QString in_voice_name);
+void begin_tts(QString _text, QString _filename, QString _voice_name);
 
 
 #endif // TTS_H

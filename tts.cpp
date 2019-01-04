@@ -1,6 +1,6 @@
 ﻿#include <stdlib.h>
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
 #include <conio.h>
 #include <errno.h>
 
@@ -8,6 +8,7 @@
 #include "tts/msp_cmn.h"
 #include "tts/msp_errors.h"
 #include "tts.h"
+#include <qt_windows.h>
 
 static wave_pcm_hdr default_wav_hdr =
 {
@@ -95,21 +96,29 @@ int text_to_speech(const char* src_text, const char* des_path, const char* param
 void begin_tts(QString in_text, QString in_filename, QString in_voice_name)
 {
     int         ret = MSP_SUCCESS;
-    const char* login_params = "appid = 5c25c3f2, work_dir = .";
-
-    QByteArray btarr_text = in_text.toLatin1();
-    const char* text = btarr_text.data();
-
+    const char* login_params = "appid = 5c25c3f2, work_dir = .";//登录参数,appid与msc库绑定,请勿随意改动
     const QString file_format = ".wav";
-    QByteArray btarr_filename = (in_filename+file_format).toLatin1();
-    const char* filename = btarr_filename.data();
 
+    QByteArray text_ba = in_text.toLatin1();
+    QByteArray filename_ba = (in_filename + file_format).toLatin1();
+
+    const char* text = text_ba.data();
+    const char* filename = filename_ba.data();
+
+    /*
+    * rdn:           合成音频数字发音方式
+    * volume:        合成音频的音量
+    * pitch:         合成音频的音调
+    * speed:         合成音频对应的语速
+    * voice_name:    合成发音人
+    * sample_rate:   合成音频采样率
+    * text_encoding: 合成文本编码格式
+    *
+    */
     QString params_head = "voice_name = ";
     QString params_tail = ", text_encoding = UTF8, sample_rate = 16000, speed = 50, volume = 100, pitch = 50, rdn = 2";
-    QString in_session_begin_params = params_head + in_voice_name + params_tail;
-
-    QByteArray btarr_session_begin_params = in_session_begin_params.toLatin1();
-    const char* session_begin_params = btarr_session_begin_params.data();
+    QByteArray session_begin_params_ba = (params_head + in_voice_name + params_tail).toLatin1();
+    const char* session_begin_params = session_begin_params_ba.data();
 
     ret = MSPLogin(nullptr, nullptr, login_params);
     if (MSP_SUCCESS != ret)

@@ -17,17 +17,33 @@ Qt版本是5.12.0，编译器是MSVC2017 64bit，编译后，运行之前将sour
 
 * 界面显示
 
+![interface](screenshots/interface.png)
+
 * 选择文件
+
+![import](screenshots/import.png)
 
 * 自主选择发音人
 
+![voice](screenshots/voice.png)
+
 * 选择听写间隔时间
+
+![time](screenshots/time.png)
 
 * 文本显示
 
+![text1](screenshots/text1.png)
+
+![text2](screenshots/text2.png)
+
 * 音频生成示例
 
+![music](screenshots/music.png)
+
 * 利用外部播放器播放示例
+
+![play](screenshots/play.png)
 
 ## 博客
 

@@ -1,14 +1,17 @@
 ﻿#include "dictation.h"
 #include "tts.h"
+#include "getaudiothread.h"
+#include "warningbox.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
-#include "getaudiothread.h"
+#include <QtWinExtras>
 
 Dictation::Dictation(QWidget *parent) : QWidget(parent)
 {
     create_window_widgets();
+    stylize();
 
     connect(btn_import_text,SIGNAL(clicked()),this,SLOT(slot_import_text()));
     connect(btn_begin_dictate,SIGNAL(clicked()),this,SLOT(slot_begin_dictate()));
@@ -21,14 +24,14 @@ Dictation::~Dictation()
 
 void Dictation::create_window_widgets()
 {
-    /*create layouts*/
+    /*创建布局*/
     layout_h_left_select_vioce = new QHBoxLayout();
     layout_h_left_dictate_time_interval = new QHBoxLayout();
     layout_v_right = new QVBoxLayout();
     layout_h_main = new QGridLayout(this);
 
 
-    /*create buttons*/
+    /*创建按钮*/
     btn_import_text = new QPushButton();
     btn_begin_dictate = new QPushButton();
     btn_radio_vioce_man = new QRadioButton();
@@ -43,33 +46,33 @@ void Dictation::create_window_widgets()
     btn_radio_vioce_woman->setChecked(true);
 
 
-    /*create labels*/
+    /*创建标签*/
     label_select_vioce = new QLabel();
     label_dictate_time_interval = new QLabel();
 
     label_select_vioce->setText(tr("选择发音人"));
     label_dictate_time_interval->setText(tr("听写间隔时间"));
 
-    /*create comboBox*/
+    /*创建下拉列表框*/
     combo_box_dictate_time_interval = new QComboBox();
 
     combo_box_dictate_time_interval->insertItem(0,tr("3s"));
     combo_box_dictate_time_interval->insertItem(1,tr("5s"));
 
-    /*add widgets*/
+    /*添加窗口部件*/
 
-    //left
+    /*左边部件*/
     layout_h_left_select_vioce->addWidget(label_select_vioce);
     layout_h_left_select_vioce->addWidget(btn_radio_vioce_woman);
     layout_h_left_select_vioce->addWidget(btn_radio_vioce_man);
     layout_h_left_dictate_time_interval->addWidget(label_dictate_time_interval);
     layout_h_left_dictate_time_interval->addWidget(combo_box_dictate_time_interval);
 
-    //right
+    /*右边部件*/
     layout_v_right->addWidget(btn_import_text);
     layout_v_right->addWidget(btn_begin_dictate);
 
-    //main
+    /*主布局添加子布局*/
     layout_h_main->addLayout(layout_h_left_select_vioce,0,0);
     layout_h_main->addLayout(layout_h_left_dictate_time_interval,1,0);
     layout_h_main->addLayout(layout_v_right,0,1,2,2);
@@ -83,6 +86,24 @@ void Dictation::set_voice()
     } else if (btn_radio_vioce_woman->isChecked()) {
         voice_name = XIAOYAN;
     }
+}
+
+
+void Dictation::stylize()
+{
+    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows8) {
+        //在WIN7下实现窗口的毛玻璃效果
+        if (QtWin::isCompositionEnabled()) {
+            QtWin::extendFrameIntoClientArea(this, -1, -1, -1, -1); //玻璃效果
+            setAttribute(Qt::WA_TranslucentBackground, true); //半透明背景
+            setStyleSheet(QStringLiteral("dictation { background: transparent; }"));
+        } else {
+            QtWin::resetExtendedFrame(this);
+            setAttribute(Qt::WA_TranslucentBackground, false);
+            setStyleSheet(QStringLiteral("dictation { background: %1; }").arg(QtWin::realColorizationColor().name()));
+        }
+    }
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 }
 
 
@@ -124,6 +145,10 @@ void Dictation::slot_begin_dictate()
         }
     } else {
         /*未导入文本时提示*/
-        QMessageBox::warning(this,tr("提示"),tr("请先导入文件"),tr("确定"));
+        WarningBox warning_box; //定义警告消息框
+        warning_box.setWindowTitle(tr("提示")); //标题
+        warning_box.addButton(tr("确定"),QMessageBox:: ActionRole); //添加按钮
+        warning_box.setText(tr("请先导入文件！")); //设置文字提醒信息
+        warning_box.exec(); //显示此警告消息狂
     }
 }

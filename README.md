@@ -1,8 +1,10 @@
 # Words-Dictation
+
 使用Qt做的单词听写软件，基于语音合成技术
 
 
 ## 说明
+
 Qt版本是5.12.0，编译器是MSVC2017 64bit，编译后，运行之前将source\dll文件夹下的动态链接库文件放到程序生成目录底下。如：build-Words-Dictation-desktop_Qt_5_12_0_MSVC2017_64bit-Debug\debug
 
 ![note1](screenshots/note1.png)
@@ -43,6 +45,13 @@ Qt版本是5.12.0，编译器是MSVC2017 64bit，编译后，运行之前将sour
 * 利用外部播放器播放示例
 
 ![play](screenshots/play.png)
+
+
+## 下载
+
+测试版本程序存储在网盘中
+
+[百度网盘](https://pan.baidu.com/s/1_92k3M5Gd8XjpGlHJh8Meg)	密码：hiqu
 
 
 ## 博客

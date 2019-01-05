@@ -110,7 +110,7 @@ void Dictation::stylize()
 void Dictation::slot_import_text()
 {
     /*获得文件名*/
-    QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"./",tr("Text files (*.txt)"));
+    QString file_name = QFileDialog::getOpenFileName(this,tr("打开文件"),"/",tr("Text files (*.txt)"));
     /* 当未获得文件名时，不往下执行
      * 如果没有这个if判断，会在控制台出现
      * "QFSFileEngine::open: No file name specified"提示

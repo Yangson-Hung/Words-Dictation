@@ -29,19 +29,18 @@ HEADERS += \
     getaudiothread.h \
     warningbox.h
 
+RC_ICONS = images/logo.ico
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    icon.qrc
 
-
-win32: LIBS += -L$$PWD/libs/ -lmsc_x64
+win32: LIBS += -L$$PWD/libs/ -lmsc_x64 -L$$PWD/libs/ -lmsc
 
 INCLUDEPATH += $$PWD/libs
 DEPENDPATH += $$PWD/libs
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/msc_x64.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/libmsc_x64.a
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/msc_x64.lib $$PWD/libs/msc.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/libmsc_x64.a $$PWD/libs/libmsc.a
